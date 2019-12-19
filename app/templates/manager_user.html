@@ -12,8 +12,10 @@
                             <th>选择</th>
                             <th>ID</th>
                             <th>用户名</th>
-                            <th>密码</th>
                             <th>邮箱</th>
+                            <th>角色</th>
+                            <th>地址</th>
+                            <th>关于</th>
                             <th>信息修改</th>
                         </tr>
                         {% for user in users %}
@@ -21,8 +23,10 @@
                             <th><input name="user" type="checkbox" value="{{ user.id|safe }}"/></th>
                             <th><p>{{ user.id|safe }}</p></th>
                             <th><p>{{ user.username|safe }}</p></th>
-                            <th><p>{{ user.password_hash|safe }}</p></th>
                             <th><p>{{ user.email|safe }}</p></th>
+                            <th><p>{{ user.itsrole.name|safe }}</p></th>
+                            <th><p>{{ user.location|safe }}</p></th>
+                            <th><p>{{ user.about_me|safe }}</p></th>
                             <th><p><a href="{{ url_for('main.edit_profile_admin', id = user.id) }}">修改信息</a></p></th>
                         </tr>
                         {% endfor %}

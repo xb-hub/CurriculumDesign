@@ -61,8 +61,8 @@ class User(UserMixin, db.Model):
     confirmed = db.Column(db.Boolean, default=False)             # 邮箱令牌是否点击
     real_avatar = db.Column(db.String(128), default = None)
     name = db.Column(db.String(64))         # 用户信息中的昵称
-    location = db.Column(db.String(64))     # 用户地址
-    about_me = db.Column(db.Text())         # 用户介绍
+    location = db.Column(db.String(64), default='')     # 用户地址
+    about_me = db.Column(db.Text(), default='')         # 用户介绍
     member_since = db.Column(db.DateTime, default=datetime.utcnow)             # 注册时间
     last_seen = db.Column(db.DateTime, default=datetime.utcnow)               # 上次访问时间
     posts = db.relationship('Post', backref='author', lazy='dynamic',

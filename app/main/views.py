@@ -1,5 +1,6 @@
 # -*- coding:utf-8 -*-
 import os
+import shutil
 from flask import render_template, flash, abort, redirect, url_for, request, current_app, make_response
 from flask_login import login_required, current_user
 from ..decorators import admin_required, permission_required
@@ -282,6 +283,12 @@ def user_delete():
     if value == "删除所选项目":
         for s in s_option:
             user = User.query.filter_by(id=s).first()
+            # 删除头像文件夹
+            UPLOAD_FOLDER = current_app.config['UPLOAD_FOLDER']
+            avatar_path = '{}/{}/'.format(UPLOAD_FOLDER, user.username)
+            # print(avatar_path)
+            shutil.rmtree(avatar_path)
+
             db.session.delete(user)
             db.session.commit()
     return redirect(url_for('main.user_list'))

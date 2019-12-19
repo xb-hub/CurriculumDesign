@@ -45,6 +45,7 @@ def register():
         if not isExists:
             os.makedirs(avatar_path)
             # print('创建成功')
+            
         User.add_self_follows()           # 把自己添加成自己的关注
         token = user.generate_confirm_token()                            # 产生一个令牌
         send_mail(user.email, u'请确认您的帐号', 'confirm', user=user, token=token)   # 发送邮件
