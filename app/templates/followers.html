@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% import 'include/_macros.html' as macros %}
+
+{% block title %}
+    {{ user.username }}{{ title }}
+{% endblock %}
+
+{% block content %}
+    <div class="page-header">
+        <h2>{{ user.username }}{{ title }}</h2>
+    </div>
+    <table class="table table-hover followers">
+        <thead><tr><th>用户名</th><th>时间</th></tr></thead>
+        {% for follow in follows %}
+            {% if follow.user != user %}
+            <tr>
+                <td>
+                    <a href="{{ url_for('main.user',username=follow.user.username) }}">
+                        {% if current_user.real_avatar %}
+                        <img src="{{ current_user.real_avatar }}" height="32" width="32">
+                        {% else %}
+                        <img src="../../static/avatar/DarkSoul.jpg" height="32" width="32">
+                        {% endif %}
+                        {{ follow.user.username }}
+                    </a>
+                </td>
+                <td>
+                {{ moment(follow.timestamp).format('L') }}
+                </td>
+            </tr>
+            {% endif %}
+        {% endfor %}
+    </table>
+    <div class="pagination">
+        {{ macros.pagination_widget(pagination, 'main.followers',username=user.username) }}
+    </div>
+{% endblock %}
