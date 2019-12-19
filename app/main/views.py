@@ -174,19 +174,13 @@ def edit_avatar():
         if not flag:
             flash('文件类型错误')
             return redirect(url_for('main.edit_profile'))
-        avatar_path = '{}/{}'.format(UPLOAD_FOLDER, current_user.username)
-        isExists=os.path.exists(avatar_path)
-        if not isExists:
-            os.makedirs(avatar_path)
-            # print('创建成功')
-        avatar.save('{}/{}'.format(avatar_path, fname))
+        avatar.save('{}/{}/{}'.format(UPLOAD_FOLDER, current_user.username, fname))
         current_user.real_avatar = '../static/avatar/{}/{}'.format(current_user.username, fname)
         flash(u'头像已经被更改')
         db.session.add(current_user)              # 更新头像
         db.session.commit()
         return redirect(url_for('main.user', username=current_user.username))
     return render_template('edit_avatar.html',form=form)
-    pass
 
 # 修改密码
 @main.route('/edit-password', methods=['GET','POST'])

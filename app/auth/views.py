@@ -1,5 +1,6 @@
 # -*- coding:utf-8 -*-
-from flask import render_template, flash, redirect, url_for, request
+import os
+from flask import render_template, flash, redirect, url_for, request, current_app
 from flask_login import login_user, logout_user, login_required, current_user
 
 from ..email import send_mail
@@ -37,6 +38,13 @@ def register():
                     password=form.password.data, email=form.email.data)  # 新添加一个用户到数据库中
         db.session.add(user)
         db.session.commit()
+        # 生成用户头像文件夹
+        UPLOAD_FOLDER = current_app.config['UPLOAD_FOLDER']
+        avatar_path = '{}/{}'.format(UPLOAD_FOLDER, user.username)
+        isExists=os.path.exists(avatar_path)
+        if not isExists:
+            os.makedirs(avatar_path)
+            # print('创建成功')
         User.add_self_follows()           # 把自己添加成自己的关注
         token = user.generate_confirm_token()                            # 产生一个令牌
         send_mail(user.email, u'请确认您的帐号', 'confirm', user=user, token=token)   # 发送邮件
