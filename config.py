@@ -12,13 +12,9 @@ class Config:
     MAIL_PORT = 465                       # 端口为465
     MAIL_USE_SSL = True                   # TLS服务失败，要用SSL
     MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
-    # MAIL_USERNAME = "934814993@qq.com"
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
-    # MAIL_PASSWORD = 'atfpyqtdbsnqbdii'
     FLASK_ADMIN = os.environ.get('FLASK_ADMIN')
-    # FLASK_ADMIN = "934814993@qq.com"
     FLASKY_MAIL_SENDER = os.environ.get('MAIL_USERNAME')
-    # FLASKY_MAIL_SENDER = "934814993@qq.com"
     POSTS_PER_PAGE = os.environ.get('POSTS_PER_PAGE')
     FLASKY_SLOW_DB_QUERY_TIME = 0.5
     # 头像位置
