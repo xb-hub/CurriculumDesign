@@ -19,6 +19,8 @@ class Config:
     FLASKY_SLOW_DB_QUERY_TIME = 0.5
     # 头像位置
     UPLOAD_FOLDER = os.getcwd() + '/app/static/avatar'
+    # CKEditor
+    CKEDITOR_SERVE_LOCAL = True
 
     @staticmethod
     def init_app(app):

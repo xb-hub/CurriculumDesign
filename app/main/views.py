@@ -88,7 +88,6 @@ def help():
             form.validate_on_submit():
         post = Post(title=form.title.data,body=form.body.data,
                     author=current_user._get_current_object())
-        db.session.add(post)
         db.session.commit()
         return redirect(url_for('main.index'))
     return render_template('help.html',form=form)
@@ -305,7 +304,6 @@ def user_add():
 @login_required
 @admin_required
 def manager_delete(id):
-    return test
     post = Post.query.get_or_404(id)
     if not current_user.can(Permission.ADMINISTRATOR):       # 当前用户不是管理员
         abort(403)

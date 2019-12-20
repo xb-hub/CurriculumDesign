@@ -3,12 +3,13 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, SelectField, BooleanField, TextAreaField, FileField, PasswordField
 from wtforms.validators import DataRequired, Email, Length, Required, EqualTo
 from flask_pagedown.fields import PageDownField
+from flask_ckeditor import CKEditorField
 from ..models import Role
 
 # 首页的文章表单
 class PostForm(FlaskForm):
     title = StringField(label=u'求助文章标题', validators=[DataRequired()], id='titlecode')
-    body = PageDownField(label=u'求助内容', validators=[DataRequired()])
+    body = CKEditorField(label=u'求助内容', validators=[DataRequired()])
     submit = SubmitField(label=u'提交')
 
 class CommentForm(FlaskForm):

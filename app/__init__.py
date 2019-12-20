@@ -9,6 +9,7 @@ from flask_moment import Moment
 from flask_pagedown import PageDown
 from werkzeug.routing import BaseConverter
 from config import conifg
+from flask_ckeditor import CKEditor
 
 
 class RegexConverter(BaseConverter):
@@ -22,6 +23,7 @@ login_manager = LoginManager()
 mail = Mail()
 moment = Moment()
 pagedown = PageDown()
+ckeditor = CKEditor()
 login_manager.session_protection = 'strong'
 login_manager.login_view = 'auth.login'           # login_view设置登陆页面的端点
 basedir = path.abspath(path.dirname(__file__))
@@ -37,6 +39,7 @@ def create_app(config_name):
     mail.init_app(app)
     moment.init_app(app)
     pagedown.init_app(app)
+    ckeditor.init_app(app)
 
     from .main import main as main_blueprint
     from .auth import auth as auth_blueprint
