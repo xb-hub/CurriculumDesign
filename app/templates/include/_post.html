@@ -24,7 +24,9 @@
                 <span class="label">{{ moment(post.timestamp).fromNow() }}</span>
                 {% if current_user == post.author %}
                 <span class="label label-default"><a href="{{ url_for('main.edit',id=post.id) }}">编辑</a></span>
+                <span class="label label-default"><a href="{{ url_for('main.author_delete',id=post.id) }}">删除</a></span>
                 {% elif current_user.is_administrator() %}
+                <span class="label label-default"><a href="{{ url_for('main.manager_delete',id=post.id) }}">删除[管理员]</a></span>
                 <span class="label label-default"><a href="{{ url_for('main.edit',id=post.id) }}">编辑[管理员]</a></span>
                 {% endif %}
                 <span class="label label-default"><a href="{{ url_for('main.post', id=post.id) }}">文章链接</a></span>

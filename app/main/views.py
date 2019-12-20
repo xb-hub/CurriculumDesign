@@ -300,6 +300,36 @@ def user_delete():
 def user_add():
     pass
 
+# 管理员删除文章
+@main.route('/manager_delete/<int:id>', methods=['GET','POST'])
+@login_required
+@admin_required
+def manager_delete(id):
+    return test
+    post = Post.query.get_or_404(id)
+    if not current_user.can(Permission.ADMINISTRATOR):       # 当前用户不是管理员
+        abort(403)
+    db.session.delete(post)
+    db.session.commit()
+    response = make_response(redirect(url_for('main.index')))
+    return response
+    pass
+
+# 作者删除文章
+@main.route('/author_delete/<int:id>', methods=['GET','POST'])
+@login_required
+def author_delete(id):
+    post = Post.query.get_or_404(id)
+    print(current_user)
+    print(post.author)
+    if current_user != post.author:   # 当前用户不是发表的人
+        abort(403)
+    db.session.delete(post)
+    db.session.commit()
+    response = make_response(redirect(url_for('main.index')))
+    return response
+    pass
+
 # 协管员管理评论,所有评论
 @main.route('/moderate', methods=['GET','POST'])
 @login_required
