@@ -5,7 +5,7 @@ from wtforms.validators import DataRequired, Email, Length, Required, EqualTo
 from flask_pagedown.fields import PageDownField
 from ..models import Role
 
-# 首页的博客文章表单
+# 首页的文章表单
 class PostForm(FlaskForm):
     title = StringField(label=u'求助文章标题', validators=[DataRequired()], id='titlecode')
     body = PageDownField(label=u'求助内容', validators=[DataRequired()])

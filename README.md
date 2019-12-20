@@ -1,4 +1,4 @@
-# 基于flask的博客系统搭建
+# 基于flask的网上求助平台搭建
 - 1.安装数据库迁移。输入以下命令
 ```
 python3 manager.py db init (使用init命令创建迁移仓库)

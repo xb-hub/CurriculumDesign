@@ -243,13 +243,13 @@ def edit_profile_admin(id):
     form.about_me.data = user.about_me
     return render_template('edit_profile.html',form=form,user=user)
 
-# 编辑博客文章路由
+# 编辑文章路由
 @main.route('/edit/<int:id>', methods=['GET','POST'])
 @login_required
 def edit(id):
     post = Post.query.get_or_404(id)
     if current_user != post.author and \
-            not current_user.can(Permission.ADMINISTRATOR):       # 当前作者不是发表博客的人且不是管理员
+            not current_user.can(Permission.ADMINISTRATOR):       # 当前作者不是发表的人且不是管理员
         abort(403)
     form = PostForm()
     if form.validate_on_submit():

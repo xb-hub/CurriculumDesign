@@ -217,7 +217,7 @@ class Comment(db.Model):
     post_id = db.Column(db.Integer, db.ForeignKey('posts.id'))
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
-    @staticmethod  # 这个为静态方法是因为客户端不能指定评论所属博客和作者，只有服务器可以指定为当前用户
+    @staticmethod
     def from_json(json_body):
         body = json_body.get('body')
         if body is None or body == '':
@@ -292,7 +292,7 @@ class Post(db.Model):
             db.session.add(p)
             db.session.commit()
 
-    @staticmethod                # 给所有发表博客文章添加标题
+    @staticmethod                # 给所有发表求助文章添加标题
     def generate_title():
         from random import seed
         import forgery_py
