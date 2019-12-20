@@ -51,3 +51,4 @@ webencodings==0.5
 Werkzeug==0.11.15
 wrapt==1.10.8
 WTForms==2.1
+flask-ckeditor==0.4.3

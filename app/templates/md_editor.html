@@ -16,7 +16,7 @@
                     <!-- {{ form.body.label }} -->
                     <div class="row">
                         <div class="col-md-6 " >
-                            <div class="panel panel-default", style="height: 600px; width: 1130px;">
+                            <div class="panel panel-default", style="height: 650px; width: 1130px;">
                                 <div class="panel-heading", style="height: 50px;">编辑区</div>
                                 <div class="panel-body", style="height: 550px;">
                                     <!-- {{ form.body(only_input=True, style="height: 100%;width:100%;") }} -->
@@ -39,7 +39,7 @@
                 </div>
             </form>
             {{ ckeditor.load() }}
-            {{ ckeditor.config(name='body') }}
+            {{ ckeditor.config(name='body', lanuage='en', width=1100, height=400) }}
         </div>
     </div>
 
