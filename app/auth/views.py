@@ -73,7 +73,7 @@ def before_request():
             and request.endpoint[:5] != 'auth.':
             return redirect(url_for('auth.unconfirmed'))
 
-@auth.route('/unconfirmed')      # 如果当前是匿名帐号活着已经确认，直接返回首页，否则显示未确认
+@auth.route('/unconfirmed')      # 如果当前是匿名帐号或者已经确认，直接返回首页，否则显示未确认
 def unconfirmed():
     if current_user.is_anonymous or current_user.confirmed:
         return redirect(url_for('main.index'))

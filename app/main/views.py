@@ -279,7 +279,7 @@ def user_list():
 def user_delete():
     value = request.values.get("button")
     s_option =  request.values.getlist("user")
-    if value == "删除所选项目":
+    if value == "删除用户":
         for s in s_option:
             user = User.query.filter_by(id=s).first()
             # 删除头像文件夹
