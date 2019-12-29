@@ -50,6 +50,7 @@ def register():
         token = user.generate_confirm_token()                            # 产生一个令牌
         send_mail(user.email, u'请确认您的帐号', 'confirm', user=user, token=token)   # 发送邮件
         flash(u'有一份邮件已经发往您的邮箱')
+        login_user(user)
         return redirect(url_for('auth.login'))    # 这一步一直有问题，无法重定向，直接跳到下面去了
     else:
         return render_template('register.html', title=u'注册', form=form)
