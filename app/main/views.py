@@ -77,7 +77,7 @@ def post(id):
                     page, per_page=10, error_out=False
                     )
     comments = pagination.items
-    return render_template('post.html', posts=[post], form=form,
+    return render_template('post.html', posts=[post], post=post, form=form,
                            comments=comments, pagination=pagination)
 
 @main.route('/help',methods=['GET','POST'])
@@ -202,6 +202,7 @@ def edit_password():
 def edit_profile():
     form = EditProfileForm()
     if form.validate_on_submit():
+        current_user.username = form.username.data
         current_user.name = form.name.data
         current_user.location = form.location.data
         current_user.about_me = form.about_me.data
@@ -209,6 +210,7 @@ def edit_profile():
         db.session.add(current_user)              # 更新个人资料
         db.session.commit()
         return redirect(url_for('main.user', username=current_user.username))
+    form.username.data = current_user.username
     form.name.data = current_user.name
     form.location.data = current_user.location
     form.about_me.data = current_user.about_me
@@ -232,7 +234,7 @@ def edit_profile_admin(id):
         db.session.add(user)
         db.session.commit()
         flash(u'该用户的信息已经更新了')
-        return redirect(url_for('main.user',username=user.username))
+        return redirect(url_for('main.user',username=user.username, user=user))
     form.email.data = user.email
     form.username.data = user.username
     form.confirmed.data = user.confirmed
@@ -311,7 +313,6 @@ def manager_delete(id):
     db.session.commit()
     response = make_response(redirect(url_for('main.index')))
     return response
-    pass
 
 # 作者删除文章
 @main.route('/author_delete/<int:id>', methods=['GET','POST'])
@@ -326,7 +327,17 @@ def author_delete(id):
     db.session.commit()
     response = make_response(redirect(url_for('main.index')))
     return response
-    pass
+
+# 作者删除评论
+@main.route('/<int:post_id>/comment_delete/<int:id>', methods=['GET','POST'])
+@login_required
+def comment_delete(post_id, id):
+    comment = Comment.query.get_or_404(id)
+    db.session.delete(comment)
+    db.session.commit()
+    return redirect(url_for('main.post', id=post_id))
+    # response = make_response(redirect(url_for('main.index')))
+    # return response
 
 # 协管员管理评论,所有评论
 @main.route('/moderate', methods=['GET','POST'])
@@ -337,7 +348,7 @@ def moderate():
     pagination = Comment.query.order_by(Comment.timestamp.desc()).paginate(
                                         page, per_page=10, error_out=False)
     comments = pagination.items
-    return render_template('moderate.html',
+    return render_template('moderate.html', post=comments,
                            comments=comments, pagination=pagination, page=page)
 
 # 禁止该条评论
@@ -385,5 +396,3 @@ def after_request(response):
                 % (query.statement, query.parameters, query.duration,
                    query.context))
     return response
-
-

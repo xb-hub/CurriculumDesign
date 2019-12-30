@@ -13,9 +13,11 @@
                 <li {% if url_for('main.index') is current_link %}class="active"{% endif %}>
                     <a href="{{ url_for('main.index') }}" >主页</a>
                 </li>
+                {% if current_user.is_authenticated %}
                 <li {% if url_for('main.help') is current_link %}class="active"{% endif %}>
                     <a href="{{ url_for('main.help') }}" >发布求助</a>
                 </li>
+                {% endif %}
             </ul>
             <form action="{{ url_for('main.article_find') }}" class="navbar-form navbar-left" style="padding:0; margin:0">
                 <div class="form-group">

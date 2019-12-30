@@ -20,15 +20,15 @@ class Role(db.Model):
     __tablename__ = 'roles'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=True, unique=True)
-    default = db.Column(db.Boolean, default=False)      # 只有一个角色的字段要设为True,其它都为False
-    permissions = db.Column(db.Integer)                 # 不同角色的权限不同
-    users = db.relationship('User', backref='itsrole')  # Role对象引用users,User对象引用itsrole
-                                                        # 是隐形存在的属性,一对多
+    default = db.Column(db.Boolean, default=False)              # 只有一个角色的字段要设为True,其它都为False
+    permissions = db.Column(db.Integer)                         # 不同角色的权限不同
+    users = db.relationship('User', backref='itsrole')          # Role对象引用users,User对象引用itsrole
+                                                                # 是隐形存在的属性,一对多
     @staticmethod
     def insert_roles():
         roles = {
             'User':(Permission.FOLLOW|Permission.COMMENT|
-                     Permission.WRITE_ARTICLES, True),     # 只有普通用户的default为True
+                     Permission.WRITE_ARTICLES, True),          # 只有普通用户的default为True
             'Moderare':(Permission.FOLLOW|Permission.COMMENT|
                     Permission.WRITE_ARTICLES|Permission.MODERATE_COMMENTS, False),
             'Administrator':(0xff, False)
@@ -52,27 +52,27 @@ class Follow(db.Model):
 
 class User(UserMixin, db.Model):
     __tablename__ = 'users'
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String, nullable=True)
-    password = db.Column(db.String, nullable=True)
-    email = db.Column(db.String, nullable=True, unique=True)     # 新建一个邮箱字段
-    role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
-    password_hash = db.Column(db.String, nullable=True)          # 模型中加入密码散列值
-    confirmed = db.Column(db.Boolean, default=False)             # 邮箱令牌是否点击
-    real_avatar = db.Column(db.String(128), default = None)
-    name = db.Column(db.String(64))         # 用户信息中的昵称
-    location = db.Column(db.String(64), default='')     # 用户地址
-    about_me = db.Column(db.Text(), default='')         # 用户介绍
-    member_since = db.Column(db.DateTime, default=datetime.utcnow)             # 注册时间
-    last_seen = db.Column(db.DateTime, default=datetime.utcnow)               # 上次访问时间
+    id = db.Column(db.Integer, primary_key=True)                                # id
+    username = db.Column(db.String, nullable=True)                              # 用户名
+    password = db.Column(db.String, nullable=True)                              # 密码
+    email = db.Column(db.String, nullable=True, unique=True)                    # 新建一个邮箱字段
+    role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))                  # 角色id
+    password_hash = db.Column(db.String, nullable=True)                         # 模型中加入密码散列值
+    confirmed = db.Column(db.Boolean, default=False)                            # 邮箱令牌是否点击
+    real_avatar = db.Column(db.String(128), default = None)                     # 当前头像
+    name = db.Column(db.String(64))                                             # 用户信息中的昵称
+    location = db.Column(db.String(64), default='')                             # 用户地址
+    about_me = db.Column(db.Text(), default='')                                 # 用户介绍
+    member_since = db.Column(db.DateTime, default=datetime.utcnow)              # 注册时间
+    last_seen = db.Column(db.DateTime, default=datetime.utcnow)                 # 上次访问时间
     posts = db.relationship('Post', backref='author', lazy='dynamic',
-                            cascade='all, delete-orphan')            # 一个用户有多条发表，一对多
-    followed = db.relationship('Follow', foreign_keys=[Follow.follower_id],      # 该用户关注了其它用户，对于其它用户而言，该用户就是它的追随者(关注者)
-                               backref=db.backref('follower', lazy='joined'),    # 对应follower_id
+                            cascade='all, delete-orphan')                       # 一个用户有多条发表，一对多
+    followed = db.relationship('Follow', foreign_keys=[Follow.follower_id],     # 该用户关注了其它用户，对于其它用户而言，该用户就是它的追随者(关注者)
+                               backref=db.backref('follower', lazy='joined'),   # 对应follower_id
                                lazy='dynamic',
                                cascade='all, delete-orphan')
-    followers = db.relationship('Follow', foreign_keys=[Follow.followed_id],     # 该用户的关注者们，对于关注者们而言，关注者们关注了该用户
-                                backref=db.backref('followed', lazy='joined'),   # 对应followed_id
+    followers = db.relationship('Follow', foreign_keys=[Follow.followed_id],    # 该用户的关注者们，对于关注者们而言，关注者们关注了该用户
+                                backref=db.backref('followed', lazy='joined'),  # 对应followed_id
                                 lazy='dynamic',
                                 cascade='all, delete-orphan')
     comments = db.relationship('Comment', backref='author', lazy='dynamic')
@@ -253,6 +253,7 @@ class Post(db.Model):
     title = db.Column(db.Text)
     body = db.Column(db.Text)
     body_html = db.Column(db.Text)                   # 服务器上的富文本处理字段
+    # kind = db.Column(db.String, nullable=True)
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     comments = db.relationship('Comment', backref='post', lazy='dynamic')

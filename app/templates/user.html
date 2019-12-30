@@ -6,15 +6,17 @@
     <div class="row well">
         <div class=" col-md-3 col-xs-4">
             <div>
-                {% if current_user.real_avatar %}
-                <img class="img-circle profile-thumbail" src="{{ current_user.real_avatar }}" height="128" width="128">
+                {% if user.real_avatar %}
+                <img class="img-circle profile-thumbail" src="{{ user.real_avatar }}" height="128" width="128">
                 {% else %}
                 <img class="img-circle profile-thumbail" src="../static/avatar/派大星.jpg" height="128" width="128">
                 {% endif %}
             </div>
+            {% if user == current_user %}
             <div>
                 <a class="btn btn-raised" href="{{ url_for('main.edit_avatar') }}">更换头像</a>
             </div>
+            {% endif %}
         </div>
         <div class="profile-header col-md-9 col-xs-8">
             <h1>{{ user.username }}</h1>
@@ -36,10 +38,11 @@
                 {% if user == current_user %}
                 <a class="btn btn-raised" href="{{ url_for('main.edit_profile') }}">
                     编辑信息
-                </a> {% endif %} {% if current_user.is_administrator() %}
+                </a> {% endif %} 
+                <!-- {% if current_user.is_administrator() %}
                 <a class="btn btn-danger" href="{{ url_for('main.edit_profile_admin', id=user.id) }}">
                     编辑信息[管理员]
-                </a> {% endif %}
+                </a> {% endif %} -->
             </p>
             {% if current_user.can(Permission.FOLLOW) and user != current_user %} {% if not current_user.is_following(user) %}
             <a href="{{ url_for('main.follow', username=user.username) }}" class="btn btn-primary">关注</a> {% else %}

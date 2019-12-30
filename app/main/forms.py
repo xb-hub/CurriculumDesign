@@ -19,6 +19,7 @@ class CommentForm(FlaskForm):
 
 # 普通用户修改信息表单
 class EditProfileForm(FlaskForm):
+    username = StringField(label=u'用户名', validators=[Length(0,64), DataRequired()])
     name = StringField(label=u'真实姓名', validators=[Length(0,64)])
     location = StringField(label=u'地址', validators=[Length(0,64)])
     about_me = TextAreaField(label=u'关于我')

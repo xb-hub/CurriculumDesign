@@ -4,8 +4,8 @@
             <div class="panel-heading">
                 <span class="comment-thumbail img-circle">
                     <a href="{{ url_for('main.user',username=comment.author.username)}}">
-                        {% if current_user.real_avatar %}
-                        <img src="{{ current_user.real_avatar }}" height="16" width="16">
+                        {% if comment.author.real_avatar %}
+                        <img src="{{ comment.author.real_avatar }}" height="16" width="16">
                         {% else %}
                         <img src="../../static/avatar/派大星.jpg" height="16" width="16">
                         {% endif %}
@@ -19,7 +19,9 @@
                 <span class="pull-right">
                     <span class="comment-date label label-default">{{ moment(comment.timestamp).fromNow() }}</span>
                     <span class="label label-default">评论</span>
-
+                    {% if current_user == post.author %}
+                    <span class="label label-default"><a href="{{ url_for('main.comment_delete',id=comment.id, post_id=post.id) }}">删除</a></span>
+                    {% endif %}
                 </span>
 
             </div>

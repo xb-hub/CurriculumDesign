@@ -7,8 +7,8 @@
             <span>
                 <span class="profile-thumbail">
                         <a href="{{ url_for('main.user',username=post.author.username) }}">
-                            {% if current_user.real_avatar %}
-                            <img src="{{ current_user.real_avatar }}" height="16" width="16">
+                            {% if post.author.real_avatar %}
+                            <img src="{{ post.author.real_avatar }}" height="16" width="16">
                             {% else %}
                             <img src="../../static/avatar/派大星.jpg" height="16" width="16">
                             {% endif %}
