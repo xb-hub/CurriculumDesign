@@ -42,6 +42,18 @@ def show_followed():
     response.set_cookie('show_followed','2',max_age=30*24*60*60)
     return response
 
+# 跳转到分类页面
+@main.route('/classify')
+def classify():
+    return render_template('classify.html')
+    pass
+
+# 分类文章主页
+@main.route('/article/<string:kind>')
+def article_classify(kind):
+
+    pass
+
 # 查找求助信息
 @main.route('/article_find', methods=['GET','POST'])
 @login_required
