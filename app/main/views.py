@@ -4,7 +4,7 @@ import shutil
 from flask import render_template, flash, abort, redirect, url_for, request, current_app, make_response
 from flask_login import login_required, current_user
 from ..decorators import admin_required, permission_required
-from ..models import Permission, User, Role, Post, Comment
+from ..models import Permission, User, Role, Post, Comment, Kind
 from . import main
 from .forms import EditProfileForm, EditProfileAdministratorForm, PostForm, CommentForm, EditAvatarForm, EditPasswordForm
 from .. import db
@@ -45,13 +45,22 @@ def show_followed():
 # 跳转到分类页面
 @main.route('/classify')
 def classify():
-    return render_template('classify.html')
-    pass
+    kind = db.session.query(Kind.kind).distinct().all()
+    return render_template('classify.html', kinds=kind)
 
 # 分类文章主页
-@main.route('/article/<string:kind>')
-def article_classify(kind):
-
+@main.route('/article/<string:classify>')
+def article_classify(classify):
+    show_followed = False
+    kinds = Kind.query.filter_by(kind=classify).first()
+    article = kinds.posts
+    page = request.args.get('page',1, type=int)       # 1代表如果没有明确指定，则默认渲染第一页,为2的话默认来到第二页
+    pagination = article.order_by(Post.timestamp.desc()).paginate(
+                                    page, per_page=10,
+                                    error_out=False)  # error_out=True页数超出范围返回404错误,False返回空列表
+    posts = pagination.items
+    return render_template('index.html', show_followed=show_followed,
+                           posts=posts, pagination=pagination)
     pass
 
 # 查找求助信息
@@ -92,14 +101,17 @@ def post(id):
     return render_template('post.html', posts=[post], post=post, form=form,
                            comments=comments, pagination=pagination)
 
+# 发布求助文章
 @main.route('/help',methods=['GET','POST'])
 @login_required
 def help():
     form = PostForm()
     if current_user.can(Permission.WRITE_ARTICLES) and \
             form.validate_on_submit():
+        kind = Kind(kind = form.kind.data)
         post = Post(title=form.title.data,body=form.body.data,
-                    author=current_user._get_current_object())
+                    author=current_user._get_current_object(), article_kinds=kind)
+        db.session.add(post)
         db.session.commit()
         return redirect(url_for('main.index'))
     return render_template('help.html',form=form)
@@ -117,6 +129,7 @@ def for_admin_only():
 def for_moderator_only():
     return u'管理者进入'
 
+# 用户信息
 @main.route('/user/<username>')
 def user(username):
     user = User.query.filter_by(username=username).first()
