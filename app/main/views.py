@@ -59,8 +59,8 @@ def article_classify(classify):
                                     page, per_page=10,
                                     error_out=False)  # error_out=True页数超出范围返回404错误,False返回空列表
     posts = pagination.items
-    return render_template('index.html', show_followed=show_followed,
-                           posts=posts, pagination=pagination)
+    return render_template('article_classify.html', show_followed=show_followed,
+                           posts=posts, pagination=pagination, kind=kinds)
     pass
 
 # 查找求助信息

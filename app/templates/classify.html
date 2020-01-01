@@ -19,8 +19,9 @@
         <div class="panel-heading", style="height: 50px;">文章类别</div>
         <div class="panel-body", style="height: 200px;">
             {% for kind in kinds %}
-            <div class="col-xs-6 col-sm-3">
+            <div class="col-xs-6 col-sm-1">
             <a href="{{ url_for('main.article_classify', classify = kind.kind) }}">{{ kind.kind }}</a>
+            </div>
             {% endfor %}
         </div>
         </div>
