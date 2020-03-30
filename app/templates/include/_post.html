@@ -22,7 +22,7 @@
             </span>
             <span class="post-footer">
                 <span class="label">{{ moment(post.timestamp).fromNow() }}</span>
-                <span class="label">类型:{{ post.article_kinds.kind }}</span>
+                <span class="label">类型:{{ post.kind }}</span>
                 {% if current_user == post.author %}
                 <span class="label label-default"><a href="{{ url_for('main.edit',id=post.id) }}">编辑</a></span>
                 <span class="label label-default"><a href="{{ url_for('main.author_delete',id=post.id) }}">删除</a></span>

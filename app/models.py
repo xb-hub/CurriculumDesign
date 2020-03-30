@@ -253,9 +253,9 @@ class Post(db.Model):
     title = db.Column(db.Text)
     body = db.Column(db.Text)
     body_html = db.Column(db.Text)                   # 服务器上的富文本处理字段
+    kind = db.Column(db.String, nullable=True)
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    article_kind = db.Column(db.String, db.ForeignKey('kinds.kind'))
     comments = db.relationship('Comment', backref='post', lazy='dynamic')
 
     @staticmethod      # 这个为静态方法是因为客户端不能指定文章作者，只有服务器可以指定为当前用户
@@ -271,6 +271,7 @@ class Post(db.Model):
             'url': url_for('api.get_post', id=self.id, _external=True),
             'title': self.title,
             'body': self.body,
+            'kind': self.kind,
             'body_html': self.body_html,
             'timestamp': self.timestamp,
             'comment_count': self.comments.count()
@@ -315,13 +316,6 @@ class Post(db.Model):
         allow_attributes = ['src', 'alt', 'href', 'class']
         target.body_html = bleach.linkify(bleach.clean(markdown(value, output_format='html',extensions=['markdown.extensions.extra','markdown.extensions.codehilite']),
                                                        tags=allow_tags, attributes=allow_attributes, strip=True))
-
-# 文章类型
-class Kind(db.Model):
-    __tablename__ = 'kinds'
-    id = db.Column(db.Integer, primary_key=True)
-    kind = db.Column(db.String)
-    posts = db.relationship('Post', backref='article_kinds', lazy='dynamic') 
 
 @login_manager.user_loader      # 加载用户的回调函数,成功后得到当前用户
 def load_user(user_id):

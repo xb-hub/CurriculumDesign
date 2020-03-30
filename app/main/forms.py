@@ -10,8 +10,8 @@ from ..models import Role
 class PostForm(FlaskForm):
     title = StringField(label=u'求助文章标题', validators=[DataRequired()], id='titlecode')
     body = CKEditorField(label=u'求助内容', validators=[DataRequired()])
-    kind = SelectField('文章类型', validators=[DataRequired()], 
-                        choices=[('学习', '学习'), ('家务', '家务'), ('工作', '工作'),('其他', '其他')],default='其他',
+    kind = SelectField(label=u'文章类型', validators=[DataRequired()], 
+                        choices=[('学习', '学习'), ('家务', '家务'), ('工作', '工作'), ('生活', '生活'), ('其他', '其他')],default='其他',
                         coerce=str)
     submit = SubmitField(label=u'提交')
 
